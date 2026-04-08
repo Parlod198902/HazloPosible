@@ -3,6 +3,7 @@ import logoImg from './assets/HAZLO POSIBLE LOGO.png'
 import './index.css'
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import DatosForm from './datosForm';
+
 function Hero() {
   const navigate = useNavigate();
   return (
