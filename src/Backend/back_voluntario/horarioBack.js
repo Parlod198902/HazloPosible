@@ -4,7 +4,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export const finalizarYGuardarVoluntariado = async (horarioSeleccionado) => {
   try {
-    const datosPersonales = JSON.parse(localStorage.getItem("datos_donante") || "{}");
+    const datosPersonales = JSON.parse(localStorage.getItem("datos_voluntario") || "{}");
     const actividadData = JSON.parse(localStorage.getItem("voluntariado_seleccion") || "{}");
 
     const folio = `VOL-${Math.floor(1000 + Math.random() * 9000)}`;

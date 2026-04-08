@@ -117,7 +117,7 @@ export default function Confirmacion() {
 
         <button className="cf-button cf-button--secondary" type="button" 
           onClick={() => {
-            localStorage.clear(); // Limpiamos al salir
+            localStorage.clear();
             navigate("/");
           }}>
           Volver al inicio
