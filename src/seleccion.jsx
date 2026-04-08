@@ -17,15 +17,30 @@ const STEPS = [
 
 export default function DonationSelection({ onNext }) {
   const [quantities, setQuantities] = useState(
-    Object.fromEntries(NEEDS.map((n) => [n.id, 1]))
+    Object.fromEntries(NEEDS.map((n) => [n.id, 0]))
   );
+  const [cart, setCart] = useState({});
+
+  const selectedEntries = Object.values(cart);
+  const cartCount = selectedEntries.length;
+  const totalQuantity = selectedEntries.reduce((sum, item) => sum + item.quantity, 0);
+  const totalAmount = selectedEntries.reduce((sum, item) => sum + item.quantity * item.price, 0);
 
   const changeQty = (id, delta) => {
-    setQuantities((prev) => ({ ...prev, [id]: Math.max(1, prev[id] + delta) }));
+    setQuantities((prev) => ({ ...prev, [id]: Math.max(0, prev[id] + delta) }));
   };
 
   const handleAdd = (need) => {
-    if (onNext) onNext({ ...need, quantity: quantities[need.id] });
+    const quantity = quantities[need.id];
+    if (!quantity) return;
+
+    setCart((prev) => ({
+      ...prev,
+      [need.id]: {
+        ...need,
+        quantity,
+      },
+    }));
   };
 
   return (
@@ -73,7 +88,11 @@ export default function DonationSelection({ onNext }) {
                   <button className="ds-stepper-ctrl__btn" onClick={() => changeQty(need.id, 1)}>+</button>
                 </div>
 
-                <button className="ds-add-btn" onClick={() => handleAdd(need)}>
+                <button
+                  className="ds-add-btn"
+                  onClick={() => handleAdd(need)}
+                  disabled={!qty}
+                >
                   <span>Agregar</span>
                   <span>MX${(need.price * qty).toLocaleString()}</span>
                 </button>
@@ -81,6 +100,32 @@ export default function DonationSelection({ onNext }) {
             </div>
           );
         })}
+      </div>
+
+      <div className="ds-cart-summary ds-cart-summary--lower">
+        <div className="ds-cart-summary__info">
+          <div className="ds-cart-summary__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icon-tabler-shopping-cart">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M4 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+              <path d="M15 19a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+              <path d="M17 17h-11v-14h-2" />
+              <path d="M6 5l14 1l-1 7h-13" />
+            </svg>
+          </div>
+          <div>
+            <p className="ds-cart-summary__label">{cartCount} Donativo{cartCount !== 1 ? 's' : ''}</p>
+            <p className="ds-cart-summary__total">Total: MX${totalAmount.toLocaleString()}</p>
+          </div>
+        </div>
+        <button
+          className="ds-cart-summary__btn"
+          type="button"
+          onClick={() => onNext && onNext(selectedEntries)}
+          disabled={!cartCount}
+        >
+          Continuar
+        </button>
       </div>
     </div>
   );
