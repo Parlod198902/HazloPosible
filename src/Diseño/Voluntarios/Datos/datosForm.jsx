@@ -1,8 +1,8 @@
 import './datosForm.css';
 
 const steps = [
-  { num: 1, label: 'Selección', state: 'done' },
-  { num: 2, label: 'Datos',     state: 'active' },
+  { num: 1, label: 'Datos',     state: 'active' },
+  { num: 2, label: 'Selección', state: 'inactive' },
   { num: 3, label: 'Horario',   state: 'inactive' },
   { num: 4, label: 'Confirmación', state: 'inactive' },
 ];
@@ -24,15 +24,15 @@ export default function DatosForm({ onContinue }) {
 
       <div className="df-field">
         <label htmlFor="nombre">Nombre completo</label>
-        <input type="text" id="nombre" placeholder="José Gracia Lopéz" />
+        <input type="text" id="nombre" />
       </div>
       <div className="df-field">
         <label htmlFor="tel">Teléfono</label>
-        <input type="tel" id="tel" placeholder="922-186-25-69" />
+        <input type="tel" id="tel" />
       </div>
       <div className="df-field">
         <label htmlFor="email">Correo electrónico</label>
-        <input type="email" id="email" placeholder="josegarcia203@gmail.com" />
+        <input type="email" id="email"/>
       </div>
 
       <button className="df-btn" onClick={onContinue}>Continuar</button>

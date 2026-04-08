@@ -10,11 +10,13 @@ const NEEDS = [
 ];
 
 const STEPS = [
-  { number: 1, label: "Selección" },
-  { number: 2, label: "Datos" },
+  { number: 1, label: "Datos" },
+  { number: 2, label: "Selección" },
   { number: 3, label: "Pago" },
   { number: 4, label: "Confirmación" },
 ];
+
+const ACTIVE_STEP = 2;
 
 export default function DonationSelection({ onNext }) {
   const [quantities, setQuantities] = useState(
@@ -48,19 +50,23 @@ export default function DonationSelection({ onNext }) {
     <div className="ds-wrapper">
       <div className="ds-stepper">
         <div className="ds-stepper__row">
-          {STEPS.map((step, i) => (
-            <div key={step.number} className="ds-stepper__item">
-              <div className="ds-stepper__info">
-                <div className={`ds-stepper__circle${step.number === 1 ? " ds-stepper__circle--active" : ""}`}>
-                  {step.number}
+          {STEPS.map((step, i) => {
+            const isDone = step.number < ACTIVE_STEP;
+            const isActive = step.number === ACTIVE_STEP;
+            return (
+              <div key={step.number} className="ds-stepper__item">
+                <div className="ds-stepper__info">
+                  <div className={`ds-stepper__circle${isActive ? " ds-stepper__circle--active" : isDone ? " ds-stepper__circle--done" : ""}`}>
+                    {step.number}
+                  </div>
+                  <span className={`ds-stepper__label${isActive ? " ds-stepper__label--active" : isDone ? " ds-stepper__label--done" : ""}`}>
+                    {step.label}
+                  </span>
                 </div>
-                <span className={`ds-stepper__label${step.number === 1 ? " ds-stepper__label--active" : ""}`}>
-                  {step.label}
-                </span>
+                {i < STEPS.length - 1 && <div className={`ds-stepper__line${isDone ? " ds-stepper__line--done" : ""}`} />}
               </div>
-              {i < STEPS.length - 1 && <div className="ds-stepper__line" />}
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

@@ -35,6 +35,10 @@
   margin-top: 19px;
 }
 
+.apoyo-stepper__line--done {
+  background: #d32f2f;
+}
+
 .apoyo-stepper__circle {
   width: 38px;
   height: 38px;

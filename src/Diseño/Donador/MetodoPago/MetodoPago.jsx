@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "./MetodoPago.css";
+import { finalizarYGuardarDonacion } from "../../../Backend/metodoPagoBack";
 
 const STEPS = [
-  { number: 1, label: "Selección" },
-  { number: 2, label: "Datos" },
+  { number: 1, label: "Datos" },
+  { number: 2, label: "Selección" },
   { number: 3, label: "Pago" },
   { number: 4, label: "Confirmación" },
 ];
@@ -39,10 +40,22 @@ const METODOS = [
 
 export default function MetodoPago({ onNext }) {
   const [selected, setSelected] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleContinue = () => {
-    if (!selected) return;
-    if (onNext) onNext(selected);
+  const handleContinue = async () => {
+    if (!selected || loading) return;
+
+    setLoading(true);
+
+    const resultado = await finalizarYGuardarDonacion(selected);
+
+    setLoading(false);
+
+    if (resultado.success) {
+        if (onNext) onNext(selected);
+    } else {
+        alert("Hubo un problema al guardar tu donación. Intenta de nuevo.");
+    }
   };
 
   return (
@@ -87,8 +100,12 @@ export default function MetodoPago({ onNext }) {
       </div>
 
       {selected && (
-        <button className="mp-continue-btn" onClick={handleContinue}>
-          Continuar
+        <button 
+        className="mp-continue-btn"
+        onClick={handleContinue}
+        disabled={loading}
+        >
+          {loading ? "Procesando..." : "Finalizar y generar ticket"}
         </button>
       )}
     </div>
