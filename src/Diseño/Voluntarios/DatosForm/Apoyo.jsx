@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Apoyo.css";
+import { guardarActividadVoluntariado } from "../../../Backend/back_voluntario/apoyoBack";
 
 const ACTIVITIES = [
   { id: 1, category: "Cocina", title: "Apoyo en el comedor", description: "Apoya preparando desayuno para las familias" },
@@ -22,9 +23,11 @@ export default function Apoyo({ onNext }) {
 
   const handleInscribirse = (activity) => {
     setSelected(activity.id);
+
+    guardarActividadVoluntariado(activity);
+
     if (onNext) onNext(activity);
   };
-
   return (
     <div className="apoyo-wrapper">
       {/* Stepper */}

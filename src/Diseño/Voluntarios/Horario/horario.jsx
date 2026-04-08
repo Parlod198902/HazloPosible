@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./horario.css";
+import { finalizarYGuardarVoluntariado } from "../../../Backend/back_voluntario/horarioBack";
 
 const STEPS = [
   { number: 1, label: "Selección" },
@@ -18,10 +19,25 @@ const ACTIVE_STEP = 3;
 
 export default function ScheduleSelection({ onNext }) {
   const [selected, setSelected] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSelect = (slot) => {
+  const handleSelect = async (slot) => {
+    if (isSaving) return;
+    
     setSelected(slot.id);
-    if (onNext) setTimeout(() => onNext(slot), 250);
+    setIsSaving(true);
+
+    const resultado = await finalizarYGuardarVoluntariado(slot);
+    
+    setIsSaving(false);
+
+    if (resultado.success) {
+      setTimeout(() => {
+        if (onNext) onNext(slot);
+      }, 400);
+    } else {
+      alert("Hubo un error al guardar tu registro. Por favor intenta de nuevo.");
+    }
   };
 
   return (
@@ -61,8 +77,8 @@ export default function ScheduleSelection({ onNext }) {
 
       {/* Header */}
       <div className="ss-header">
-        <h1 className="ss-header__title">Elige tu horario</h1>
-        <p className="ss-header__subtitle">Selecciona el horario que mejor te acomode</p>
+        <h1 className="ss-header__title">{isSaving ? "Registrando..." : "Elige tu horario"}</h1>
+        <p className="ss-header__subtitle">{isSaving ? "Guardando" : "Selecciona el horario que mejor te acomode"}</p>
       </div>
 
       {/* Slots */}
@@ -72,6 +88,7 @@ export default function ScheduleSelection({ onNext }) {
             key={slot.id}
             className={`ss-slot${selected === slot.id ? " ss-slot--selected" : ""}`}
             onClick={() => handleSelect(slot)}
+            disabled={isSaving}
           >
             <p className="ss-slot__time">{slot.time}</p>
             <p className="ss-slot__period">{slot.period}</p>

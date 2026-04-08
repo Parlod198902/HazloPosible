@@ -118,7 +118,7 @@ export default function DonationSelection({ onNext }) {
             </svg>
           </div>
           <div>
-            <p className="ds-cart-summary__label">{cartCount} Donativo{cartCount !== 1 ? 's' : ''}</p>
+            <p className="ds-cart-summary__label">{totalQuantity} Donativo{totalQuantity !== 1 ? 's' : ''}</p>
             <p className="ds-cart-summary__total">Total: MX${totalAmount.toLocaleString()}</p>
           </div>
         </div>

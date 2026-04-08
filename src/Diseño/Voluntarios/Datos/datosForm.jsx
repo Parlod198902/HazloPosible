@@ -1,4 +1,6 @@
 import './datosForm.css';
+import { useState } from 'react';
+import { guardarDatos } from '../../../Backend/back_voluntario/datosVoluntario';
 
 const steps = [
   { num: 1, label: 'Datos',     state: 'active' },
@@ -8,6 +10,21 @@ const steps = [
 ];
 
 export default function DatosForm({ onContinue }) {
+  const [nombre, setNombre] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [email, setEmail] = useState('');
+
+  const manejarContinuar = () => {
+    if (!nombre || !telefono || !email) {
+      alert("Por favor, completa todos los campos.");
+      return;
+    }
+
+    guardarDatos(nombre, telefono, email);
+
+    if (onContinue) onContinue();
+  }
+
   return (
     <div className="df-wrap">
       <div className="df-stepper">
@@ -24,18 +41,33 @@ export default function DatosForm({ onContinue }) {
 
       <div className="df-field">
         <label htmlFor="nombre">Nombre completo</label>
-        <input type="text" id="nombre" />
+        <input 
+        type="text" 
+        id="nombre" 
+        value = {nombre}
+        onChange={(e) => setNombre(e.target.value)}
+        />
       </div>
       <div className="df-field">
         <label htmlFor="tel">Teléfono</label>
-        <input type="tel" id="tel" />
+        <input 
+        type="tel" 
+        id="tel" 
+        value = {telefono}
+        onChange={(e) => setTelefono(e.target.value)}
+        />
       </div>
       <div className="df-field">
         <label htmlFor="email">Correo electrónico</label>
-        <input type="email" id="email"/>
+        <input 
+        type="email" 
+        id="email" 
+        value = {email}
+        onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
 
-      <button className="df-btn" onClick={onContinue}>Continuar</button>
+      <button className="df-btn" onClick={manejarContinuar}>Continuar</button>
     </div>
   );
 }
