@@ -9,13 +9,13 @@ const ACTIVITIES = [
 ];
 
 const STEPS = [
-  { number: 1, label: "Selección" },
-  { number: 2, label: "Datos" },
+  { number: 1, label: "Datos" },
+  { number: 2, label: "Selección" },
   { number: 3, label: "Horario" },
   { number: 4, label: "Confirmación" },
 ];
 
-const ACTIVE_STEP = 1;
+const ACTIVE_STEP = 2;
 
 export default function Apoyo({ onNext }) {
   const [selected, setSelected] = useState(null);
@@ -50,7 +50,9 @@ export default function Apoyo({ onNext }) {
                   {step.label}
                 </span>
               </div>
-              {i < STEPS.length - 1 && <div className="apoyo-stepper__line" />}
+              {i < STEPS.length - 1 && (
+                <div className={`apoyo-stepper__line${step.number < ACTIVE_STEP ? ' apoyo-stepper__line--done' : ''}`} />
+              )}
             </div>
           );
         })}

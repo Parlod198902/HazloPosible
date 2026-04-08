@@ -1,8 +1,8 @@
 import './datosForm.css';
 
 const steps = [
-  { num: 1, label: 'Selección', state: 'done' },
-  { num: 2, label: 'Datos',     state: 'active' },
+  { num: 1, label: 'Datos',     state: 'active' },
+  { num: 2, label: 'Selección', state: 'inactive' },
   { num: 3, label: 'Horario',   state: 'inactive' },
   { num: 4, label: 'Confirmación', state: 'inactive' },
 ];
