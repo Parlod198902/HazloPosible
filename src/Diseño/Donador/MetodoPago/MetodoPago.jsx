@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./MetodoPago.css";
-import { finalizarYGuardarDonacion } from "../../../Backend/metodoPagoBack";
+import { finalizarYGuardarDonacion } from "../../../Backend/back_donar/metodoPagoBack";
 
 const STEPS = [
   { number: 1, label: "Datos" },

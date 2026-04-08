@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./seleccion.css";
-import { guardarSeleccionLocal } from "../../../Backend/seleccionBack";
+import { guardarSeleccion } from "../../../Backend/back_donar/seleccionBack";
 
 const NEEDS = [
   { id: 1, title: "Combo Infantil", description: "Hamburguesa Chica, Papas Chicas y Jugo Chico", price: 120 },
@@ -126,7 +126,7 @@ export default function DonationSelection({ onNext }) {
           className="ds-cart-summary__btn"
           type="button"
           onClick={() => {
-            guardarSeleccionLocal(selectedEntries, totalAmount);
+            guardarSeleccion(selectedEntries, totalAmount);
             if (onNext) onNext(selectedEntries);
           }}
           disabled={!cartCount}

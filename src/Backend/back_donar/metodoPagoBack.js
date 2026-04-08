@@ -1,5 +1,5 @@
 
-import { db } from "../db/config";
+import { db } from "../../db/config";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export const finalizarYGuardarDonacion = async (metodoSeleccionado) => {

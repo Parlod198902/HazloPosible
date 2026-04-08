@@ -1,4 +1,4 @@
-export const guardarSeleccionLocal = (selectedEntries, totalAmount) => {
+export const guardarSeleccion = (selectedEntries, totalAmount) => {
   const totalArticulos = selectedEntries.reduce((sum, item) => sum + item.quantity, 0);
 
   const resumenDonacion = {
