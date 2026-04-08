@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./seleccion.css";
+import { guardarSeleccionLocal } from "../../../Backend/seleccionBack";
 
 const NEEDS = [
   { id: 1, title: "Combo Infantil", description: "Hamburguesa Chica, Papas Chicas y Jugo Chico", price: 120 },
@@ -45,7 +46,6 @@ export default function DonationSelection({ onNext }) {
 
   return (
     <div className="ds-wrapper">
-      {/* Step Progress */}
       <div className="ds-stepper">
         <div className="ds-stepper__row">
           {STEPS.map((step, i) => (
@@ -64,13 +64,11 @@ export default function DonationSelection({ onNext }) {
         </div>
       </div>
 
-      {/* Header */}
       <div className="ds-header">
         <h1 className="ds-header__title">¿Qué menú deseas donar?</h1>
         <p className="ds-header__subtitle">Selecciona el menú que quieres donar de forma significativa</p>
       </div>
 
-      {/* Cards Grid */}
       <div className="ds-grid">
         {NEEDS.map((need) => {
           const qty = quantities[need.id];
@@ -121,7 +119,10 @@ export default function DonationSelection({ onNext }) {
         <button
           className="ds-cart-summary__btn"
           type="button"
-          onClick={() => onNext && onNext(selectedEntries)}
+          onClick={() => {
+            guardarSeleccionLocal(selectedEntries, totalAmount);
+            if (onNext) onNext(selectedEntries);
+          }}
           disabled={!cartCount}
         >
           Continuar

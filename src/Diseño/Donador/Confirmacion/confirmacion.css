@@ -1,0 +1,113 @@
+.cf-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: #f8fafc;
+}
+
+.cf-card {
+  width: min(520px, 100%);
+  background: #fff;
+  border-radius: 1.25rem;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.08);
+  text-align: center;
+}
+
+.cf-icon-box {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 1.5rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #fcd34d;
+  background: transparent;
+  color: #f59e0b;
+}
+
+.cf-icon-box svg {
+  width: 4rem;
+  height: 4rem;
+}
+
+.cf-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111827;
+}
+
+.cf-subtitle {
+  margin: 0.5rem auto 2rem;
+  color: #6b7280;
+  font-size: 1rem;
+  max-width: 380px;
+}
+
+.cf-summary {
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  margin: 0 auto 1.75rem;
+  text-align: left;
+}
+
+.cf-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.cf-row:last-child {
+  border-bottom: none;
+}
+
+.cf-row span {
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.cf-row strong {
+  color: #111827;
+  font-weight: 700;
+}
+
+.cf-button {
+  width: 100%;
+  border: none;
+  border-radius: 0.95rem;
+  padding: 0.95rem 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.cf-button:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+
+.cf-button--primary {
+  background: #dc2626;
+  color: #fff;
+}
+
+.cf-button--primary:hover {
+  background: #b91c1c;
+}
+
+.cf-button--secondary {
+  background: #fff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+}
+
+.cf-button--secondary:hover {
+  background: #f8fafc;
+}
