@@ -1,0 +1,121 @@
+.df-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+/* ── Stepper ── */
+.df-stepper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.df-step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.df-step-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 19px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #e0e0e0;
+  z-index: 0;
+}
+
+.df-step-item.done::after {
+  background: #e57373;
+}
+
+.df-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+
+.df-circle.active   { background: #d32f2f; color: #fff; }
+.df-circle.done     { background: transparent; color: #d32f2f; border: 2px solid #e57373; }
+.df-circle.inactive { background: transparent; color: #aaa;    border: 2px solid #ddd; }
+
+.df-label { font-size: 13px; margin-top: 6px; }
+.df-label.active   { color: #d32f2f; font-weight: 500; }
+.df-label.done     { color: #d32f2f; }
+.df-label.inactive { color: #aaa; }
+
+/* ── Encabezado ── */
+.df-title {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.df-subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 15px;
+  margin-bottom: 2rem;
+}
+
+/* ── Campos ── */
+.df-field { margin-bottom: 1.25rem; }
+
+.df-field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.df-field input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.df-field input:focus {
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.12);
+}
+
+/* ── Botón ── */
+.df-btn {
+  width: 100%;
+  padding: 14px;
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.15s;
+}
+
+.df-btn:hover  { background: #b71c1c; }
+.df-btn:active { transform: scale(0.99); }
