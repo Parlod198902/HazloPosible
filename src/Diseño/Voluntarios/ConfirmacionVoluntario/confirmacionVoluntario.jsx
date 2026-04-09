@@ -84,7 +84,7 @@ export default function ApoyoVoluntario({ onVolver }) {
       </div>
 
       <h1 className="av-title">¡Gracias por tu apoyo!</h1>
-      <p className="av-subtitle">Tu registro ha sido completado exitosamente</p>
+      <p className="av-subtitle">Tu pre-registro ha sido completado exitosamente</p>
 
       <div className="av-card">
         <div className="av-card__row">
