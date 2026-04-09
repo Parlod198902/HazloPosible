@@ -1,113 +1,181 @@
-import { useState } from "react";
-import "./MetodoPago.css";
-import { finalizarYGuardarDonacion } from "../../../Backend/back_donar/metodoPagoBack";
+import { useState } from 'react';
+import './AgregarTarjeta.css';
+import Confirmacion from '../Confirmacion/confirmacion';
+import { finalizarYGuardarDonacion } from '../../../Backend/back_donar/metodoPagoBack';
 
 const STEPS = [
-  { number: 1, label: "Datos" },
-  { number: 2, label: "Selección" },
+  { number: 1, label: "Selección" },
+  { number: 2, label: "Datos" },
   { number: 3, label: "Pago" },
   { number: 4, label: "Confirmación" },
 ];
 
-const METODOS = [
-  {
-    id: "efectivo",
-    label: "Efectivo",
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-        <path d="M3 6m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" />
-        <path d="M18 12l.01 0" />
-        <path d="M6 12l.01 0" />
-      </svg>
-    ),
-  },
-  {
-    id: "tarjeta",
-    label: "Tarjeta",
-    icon: (
-      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
-        <path d="M3 10l18 0" />
-        <path d="M7 15l.01 0" />
-        <path d="M11 15l2 0" />
-      </svg>
-    ),
-  },
-];
+const ACTIVE_STEP = 3;
 
-export default function MetodoPago({ onNext }) {
-  const [selected, setSelected] = useState(null);
+export default function AgregarTarjeta({ onContinue }) {
+  const [numeroTarjeta, setNumeroTarjeta] = useState('');
+  const [fechaVencimiento, setFechaVencimiento] = useState('');
+  const [codigoSeguridad, setCodigoSeguridad] = useState('');
+  const [showConfirmacion, setShowConfirmacion] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleContinue = async () => {
-    if (!selected || loading) return;
+  const formatearNumeroTarjeta = (valor) => {
+    const numeros = valor.replace(/\D/g, '');
+    const grupos = numeros.match(/.{1,4}/g);
+    return grupos ? grupos.join(' ') : numeros;
+  };
 
-    setLoading(true);
+  const formatearFecha = (valor) => {
+    const numeros = valor.replace(/\D/g, '');
+    if (numeros.length >= 2) {
+      return numeros.slice(0, 2) + '/' + numeros.slice(2, 4);
+    }
+    return numeros;
+  };
 
-    const resultado = await finalizarYGuardarDonacion(selected);
-
-    setLoading(false);
-
-    if (resultado.success) {
-        if (onNext) onNext(selected);
-    } else {
-        alert("Hubo un problema al guardar tu donación. Intenta de nuevo.");
+  const handleNumeroTarjetaChange = (e) => {
+    const valor = e.target.value.replace(/\D/g, '');
+    if (valor.length <= 16) {
+      setNumeroTarjeta(formatearNumeroTarjeta(valor));
     }
   };
 
+  const handleFechaChange = (e) => {
+    const valor = e.target.value.replace(/\D/g, '');
+    if (valor.length <= 4) {
+      setFechaVencimiento(formatearFecha(valor));
+    }
+  };
+
+  const handleCodigoChange = (e) => {
+    const valor = e.target.value.replace(/\D/g, '');
+    if (valor.length <= 3) {
+      setCodigoSeguridad(valor);
+    }
+  };
+
+  const handleContinuar = async () => {
+    const numeroLimpio = numeroTarjeta.replace(/\s/g, '');
+    
+    if (!numeroLimpio || numeroLimpio.length !== 16) {
+      alert('Por favor, ingresa un número de tarjeta válido (16 dígitos)');
+      return;
+    }
+    
+    if (!fechaVencimiento || fechaVencimiento.length !== 5) {
+      alert('Por favor, ingresa una fecha de vencimiento válida (MM/AA)');
+      return;
+    }
+    
+    if (!codigoSeguridad || codigoSeguridad.length !== 3) {
+      alert('Por favor, ingresa un código de seguridad válido (3 dígitos)');
+      return;
+    }
+
+    setLoading(true);
+    
+    // Guardar los datos en Firestore igual que en MetodoPago
+    const resultado = await finalizarYGuardarDonacion('tarjeta');
+    
+    setLoading(false);
+
+    if (resultado.success) {
+      setShowConfirmacion(true);
+    } else {
+      alert("Hubo un problema al guardar tu donación. Intenta de nuevo.");
+    }
+  };
+
+  if (showConfirmacion) {
+    return <Confirmacion />;
+  }
+
   return (
-    <div className="mp-wrapper">
+    <div className="at-wrapper">
       {/* Stepper */}
-      <div className="mp-stepper">
-        {STEPS.map((step, i) => (
-          <div key={step.number} className="mp-stepper__item">
-            <div className="mp-stepper__info">
-              <div className={`mp-stepper__circle ${step.number === 3 ? "mp-stepper__circle--active" : step.number < 3 ? "mp-stepper__circle--done" : ""}`}>
-                {step.number}
+      <div className="at-stepper">
+        {STEPS.map((step, i) => {
+          const isDone = step.number < ACTIVE_STEP;
+          const isActive = step.number === ACTIVE_STEP;
+          return (
+            <div key={step.number} className="at-stepper__item">
+              <div className="at-stepper__info">
+                <div className={[
+                  "at-stepper__circle",
+                  isActive ? "at-stepper__circle--active" : "",
+                  isDone ? "at-stepper__circle--done" : "",
+                ].join(" ")}>
+                  {step.number}
+                </div>
+                <span className={[
+                  "at-stepper__label",
+                  isActive ? "at-stepper__label--active" : "",
+                  isDone ? "at-stepper__label--done" : "",
+                ].join(" ")}>
+                  {step.label}
+                </span>
               </div>
-              <span className={`mp-stepper__label ${step.number === 3 ? "mp-stepper__label--active" : step.number < 3 ? "mp-stepper__label--done" : ""}`}>
-                {step.label}
-              </span>
+              {i < STEPS.length - 1 && (
+                <div className={`at-stepper__line${isDone ? " at-stepper__line--done" : ""}`} />
+              )}
             </div>
-            {i < STEPS.length - 1 && (
-              <div className={`mp-stepper__line${step.number < 3 ? " mp-stepper__line--done" : ""}`} />
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Header */}
-      <div className="mp-header">
-        <h1 className="mp-header__title">¿Cómo deseas pagar?</h1>
-        <p className="mp-header__subtitle">Selecciona tu método de pago</p>
+      <div className="at-header">
+        <h1 className="at-header__title">Agregar tarjeta</h1>
       </div>
 
-      {/* Options */}
-      <div className="mp-options">
-        {METODOS.map((metodo) => (
-          <button
-            key={metodo.id}
-            className={`mp-option${selected === metodo.id ? " mp-option--selected" : ""}`}
-            onClick={() => setSelected(metodo.id)}
-          >
-            <div className="mp-option__icon">{metodo.icon}</div>
-            <span className="mp-option__label">{metodo.label}</span>
-          </button>
-        ))}
-      </div>
+      {/* Form */}
+      <div className="at-form">
+        <div className="at-field">
+          <label htmlFor="numero">Número de la tarjeta</label>
+          <input
+            type="text"
+            id="numero"
+            value={numeroTarjeta}
+            onChange={handleNumeroTarjetaChange}
+            placeholder="1234 5678 9012 3456"
+            maxLength="19"
+          />
+        </div>
 
-      {selected && (
+        <div className="at-field-row">
+          <div className="at-field">
+            <label htmlFor="fecha">Fecha de vencimiento</label>
+            <input
+              type="text"
+              id="fecha"
+              value={fechaVencimiento}
+              onChange={handleFechaChange}
+              placeholder="MM/AA"
+              maxLength="5"
+            />
+          </div>
+
+          <div className="at-field">
+            <label htmlFor="cvv">Código de seguridad</label>
+            <input
+              type="text"
+              id="cvv"
+              value={codigoSeguridad}
+              onChange={handleCodigoChange}
+              placeholder="123"
+              maxLength="3"
+            />
+          </div>
+        </div>
+
         <button 
-        className="mp-continue-btn"
-        onClick={handleContinue}
-        disabled={loading}
+          className="at-btn" 
+          onClick={handleContinuar}
+          disabled={loading}
         >
-          {loading ? "Procesando..." : "Finalizar y generar ticket"}
+          {loading ? "Procesando..." : "Continuar"}
         </button>
-      )}
+      </div>
     </div>
   );
 }

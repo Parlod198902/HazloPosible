@@ -1,11 +1,11 @@
-.df-wrap {
+.at-wrapper {
   min-height: 100vh;
   background: #fff;
   font-family: sans-serif;
 }
 
 /* ── Stepper ── */
-.df-stepper {
+.at-stepper {
   max-width: 48rem;
   margin: 0 auto;
   padding: 2.5rem 1.5rem 1rem;
@@ -14,19 +14,19 @@
   justify-content: space-between;
 }
 
-.df-stepper__item {
+.at-stepper__item {
   display: flex;
   align-items: center;
   flex: 1;
 }
 
-.df-stepper__info {
+.at-stepper__info {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.df-stepper__circle {
+.at-stepper__circle {
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 9999px;
@@ -41,76 +41,70 @@
   transition: all 0.2s;
 }
 
-.df-stepper__circle--active {
+.at-stepper__circle--active {
   background: #dc2626;
   color: #fff;
   border-color: #dc2626;
   box-shadow: 0 2px 6px rgba(220, 38, 38, 0.4);
 }
 
-.df-stepper__circle--done {
+.at-stepper__circle--done {
   color: #dc2626;
   border-color: #e5e7eb;
   background: #fff;
 }
 
-.df-stepper__label {
+.at-stepper__label {
   margin-top: 0.25rem;
   font-size: 0.75rem;
   font-weight: 500;
   color: #9ca3af;
 }
 
-.df-stepper__label--active {
+.at-stepper__label--active {
   color: #111827;
 }
 
-.df-stepper__label--done {
+.at-stepper__label--done {
   color: #dc2626;
 }
 
-.df-stepper__line {
+.at-stepper__line {
   flex: 1;
   height: 1px;
   margin: 0 0.5rem 1rem;
   background: #e5e7eb;
 }
 
-.df-stepper__line--done {
+.at-stepper__line--done {
   background: #fca5a5;
 }
 
 /* ── Header ── */
-.df-header {
+.at-header {
   text-align: center;
   padding: 1.5rem 1.5rem 2rem;
 }
 
-.df-header__title {
+.at-header__title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #111827;
-  margin: 0 0 0.25rem;
-}
-
-.df-header__subtitle {
-  font-size: 0.875rem;
-  color: #6b7280;
   margin: 0;
 }
 
 /* ── Form ── */
-.df-form {
-  max-width: 30rem;
+.at-form {
+  max-width: 28rem;
   margin: 0 auto;
   padding: 0 1.5rem 3rem;
 }
 
-.df-field {
+.at-field {
   margin-bottom: 1.25rem;
 }
 
-.df-field label {
+.at-field label {
   display: block;
   font-size: 0.875rem;
   font-weight: 600;
@@ -118,7 +112,7 @@
   margin-bottom: 0.5rem;
 }
 
-.df-field input {
+.at-field input {
   width: 100%;
   padding: 0.75rem 1rem;
   border: 1px solid #e5e7eb;
@@ -129,18 +123,26 @@
   box-sizing: border-box;
 }
 
-.df-field input:focus {
+.at-field input:focus {
   outline: none;
   border-color: #dc2626;
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
-.df-field input::placeholder {
+.at-field input::placeholder {
   color: #9ca3af;
 }
 
+/* ── Field Row (dos columnas) ── */
+.at-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
 /* ── Button ── */
-.df-btn {
+.at-btn {
   width: 100%;
   padding: 1rem 1.5rem;
   background: #dc2626;
@@ -152,35 +154,39 @@
   cursor: pointer;
   transition: all 0.15s;
   box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
-.df-btn:hover {
+.at-btn:hover {
   background: #b91c1c;
   box-shadow: 0 4px 10px rgba(220, 38, 38, 0.4);
   transform: translateY(-1px);
 }
 
-.df-btn:active {
+.at-btn:active {
   transform: translateY(0);
 }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  .df-stepper {
+  .at-stepper {
     flex-direction: column;
     gap: 0.75rem;
   }
 
-  .df-stepper__item {
+  .at-stepper__item {
     width: 100%;
   }
 
-  .df-stepper__line {
+  .at-stepper__line {
     display: none;
   }
 
-  .df-form {
+  .at-form {
     padding: 0 1.5rem 2rem;
+  }
+
+  .at-field-row {
+    grid-template-columns: 1fr;
   }
 }

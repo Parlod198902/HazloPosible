@@ -2,12 +2,14 @@ import './datosForm.css';
 import { useState } from 'react';
 import { guardarDatos } from '../../../Backend/back_voluntario/datosVoluntario';
 
-const steps = [
-  { num: 1, label: 'Datos',     state: 'active' },
-  { num: 2, label: 'Selección', state: 'inactive' },
-  { num: 3, label: 'Horario',   state: 'inactive' },
-  { num: 4, label: 'Confirmación', state: 'inactive' },
+const STEPS = [
+  { number: 1, label: "Datos" },
+  { number: 2, label: "Selección" },
+  { number: 3, label: "Horario" },
+  { number: 4, label: "Confirmación" },
 ];
+
+const ACTIVE_STEP = 1;
 
 export default function DatosForm({ onContinue }) {
   const [nombre, setNombre] = useState('');
@@ -23,51 +25,79 @@ export default function DatosForm({ onContinue }) {
     guardarDatos(nombre, telefono, email);
 
     if (onContinue) onContinue();
-  }
+  };
 
   return (
     <div className="df-wrap">
+      {/* Stepper */}
       <div className="df-stepper">
-        {steps.map((s) => (
-          <div key={s.num} className={`df-step-item ${s.state}`}>
-            <div className={`df-circle ${s.state}`}>{s.num}</div>
-            <span className={`df-label ${s.state}`}>{s.label}</span>
-          </div>
-        ))}
+        {STEPS.map((step, i) => {
+          const isDone = step.number < ACTIVE_STEP;
+          const isActive = step.number === ACTIVE_STEP;
+          return (
+            <div key={step.number} className="df-stepper__item">
+              <div className="df-stepper__info">
+                <div className={[
+                  "df-stepper__circle",
+                  isActive ? "df-stepper__circle--active" : "",
+                  isDone ? "df-stepper__circle--done" : "",
+                ].join(" ")}>
+                  {step.number}
+                </div>
+                <span className={[
+                  "df-stepper__label",
+                  isActive ? "df-stepper__label--active" : "",
+                  isDone ? "df-stepper__label--done" : "",
+                ].join(" ")}>
+                  {step.label}
+                </span>
+              </div>
+              {i < STEPS.length - 1 && (
+                <div className={`df-stepper__line${isDone ? " df-stepper__line--done" : ""}`} />
+              )}
+            </div>
+          );
+        })}
       </div>
 
-      <h1 className="df-title">Tus datos</h1>
-      <p className="df-subtitle">Completa tu información para continuar</p>
-
-      <div className="df-field">
-        <label htmlFor="nombre">Nombre completo</label>
-        <input 
-        type="text" 
-        id="nombre" 
-        value = {nombre}
-        onChange={(e) => setNombre(e.target.value)}
-        />
-      </div>
-      <div className="df-field">
-        <label htmlFor="tel">Teléfono</label>
-        <input 
-        type="tel" 
-        id="tel" 
-        value = {telefono}
-        onChange={(e) => setTelefono(e.target.value)}
-        />
-      </div>
-      <div className="df-field">
-        <label htmlFor="email">Correo electrónico</label>
-        <input 
-        type="email" 
-        id="email" 
-        value = {email}
-        onChange={(e) => setEmail(e.target.value)}
-        />
+      {/* Header */}
+      <div className="df-header">
+        <h1 className="df-header__title">Tus datos</h1>
+        <p className="df-header__subtitle">Completa tu información para continuar</p>
       </div>
 
-      <button className="df-btn" onClick={manejarContinuar}>Continuar</button>
+      {/* Form */}
+      <div className="df-form">
+        <div className="df-field">
+          <label htmlFor="nombre">Nombre completo</label>
+          <input 
+            type="text" 
+            id="nombre" 
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+          />
+        </div>
+        <div className="df-field">
+          <label htmlFor="tel">Teléfono</label>
+          <input 
+            type="tel" 
+            id="tel" 
+            value={telefono}
+            onChange={(e) => setTelefono(e.target.value)}
+          />
+        </div>
+        <div className="df-field">
+          <label htmlFor="email">Correo electrónico</label>
+          <input 
+            type="email" 
+            id="email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <button className="df-btn" onClick={manejarContinuar}>Continuar</button>
+      </div>
     </div>
   );
 }
